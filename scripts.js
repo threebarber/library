@@ -113,6 +113,8 @@ function displaySingleBook(book){
     newBook.appendChild(newBookTitle);
     newBook.appendChild(newBookAuthor);
     newBook.appendChild(newBookpagesRead);
+
+    bookDiv.appendChild(newBook);
 }
 
 
