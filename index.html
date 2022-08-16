@@ -20,8 +20,26 @@
 </script>
 
 <body>
+    <div class="formDiv">
+        <h4>Add Book</h4>
+        <hr />
+        <form><fieldset>
+            <label for="author"><strong>Author</strong></label>
+            <input id="authorInput" type="text" placeholder="author" name="author" required>
+            <label for="title"><strong>Title</strong></label>
+            <input id="titleInput" type="text" placeholder="title" name="title" required>
+            <label for="pages"><strong>Pages</strong></label>
+            <input id="pagesInput" type="number" placeholder="0" name="pages" required>
+            <label for="read"><strong>Read?</strong></label>
+            <input id="readCheckbox" type="checkbox" name="read" required>
+            <button id="addButton" type="button">Add Book</button>
+        </fieldset>
+        </form>
+    </div>
+
+
     <div class="bookDiv">
-        
+
     </div>
 
     <script src="scripts.js"></script> <!-- external scripts file with logic-->
