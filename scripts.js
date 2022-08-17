@@ -147,12 +147,15 @@ function displaySingleBook(book){
 
 function updateBooksDisplay(){
 
+    idCounter = 1;
+
     const bookDiv = document.querySelector(".bookDiv");
 
     bookDiv.innerHTML = "";
 
     for (var book of bookLibrary){
 
+        book.id = idCounter;
 
         var newBook = document.createElement("div");
         newBook.classList.add("bookItem");
@@ -181,6 +184,8 @@ function updateBooksDisplay(){
         newBook.appendChild(delButton);
 
         bookDiv.appendChild(newBook);
+
+        idCounter++;
 
         }
     }
