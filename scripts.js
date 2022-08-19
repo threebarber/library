@@ -1,8 +1,7 @@
 let bookLibrary = [];
 
-let idCounter = 0;
 
-document.querySelector("#addButton").addEventListener('click',function(){
+document.querySelector("#addButton").addEventListener('click', function () {
     addNewBook();
 })
 
@@ -19,67 +18,65 @@ bookLibrary.push(testBook2);
 
 */
 
-displayBooks(bookLibrary);
 
-for (var book of bookLibrary){
+for (var book of bookLibrary) {
     console.log(book.title);
 }
 
 
-function Book(id,author,title,pages,read){
-    this.id = id;
+function Book(author, title, pages, read) {
+
+    this.id = `${title}-${Date.now()}`;
     this.author = author;
     this.title = title;
     this.pages = pages;
     this.read = read;
 
-    this.addBook = function(){
+    this.addBook = function () {
         bookLibrary.push(this);
     }
 }
 
 
-function addNewBook(){
-    idCounter+=1;
+function addNewBook() {
+
     let author = document.querySelector("#authorInput").value;
     let title = document.querySelector("#titleInput").value;
     let pages = document.querySelector("#pagesInput").value;
 
     var read;
-    
-    if(document.querySelector("#readCheckbox").checked){
+
+    if (document.querySelector("#readCheckbox").checked) {
         read = true;
-    }else{
+    } else {
         read = false;
     }
 
-    var newBook = new Book(idCounter,author,title,pages,read);
-    bookLibrary.push(newBook);
+    var newBook = new Book(author, title, pages, read);
+    
+    newBook.addBook();
+
     displayBooks(bookLibrary);
 }
 
 
 
-function displayBooks(bookLibrary){
+function displayBooks(bookLibrary) {
 
 
     const bookDiv = document.querySelector(".bookDiv");
 
     bookDiv.innerHTML = "";
 
-    idCounter = 0;
 
-    for (var book of bookLibrary){
-
-
-        idCounter++;
+    for (var book of bookLibrary) {
 
         console.log(book.title);
 
 
         var newBook = document.createElement("div");
         newBook.classList.add("bookItem");
-    
+
         var newBookTitle = document.createElement("h3");
         newBookTitle.innerText = ` #${book.id} Title: ${book.title}`;
 
@@ -93,7 +90,16 @@ function displayBooks(bookLibrary){
         var delButton = document.createElement("button");
         delButton.innerText = "Remove Book";
 
-        delButton.addEventListener('click',function(){
+
+        var readButton = document.createElement("button");
+        readButton.innerText = "Change Read";
+    
+    
+        readButton.addEventListener('click', function () {
+            changeRead(book.id);
+        })
+
+        delButton.addEventListener('click', function () {
             deleteBook(book.id);
         })
 
@@ -102,6 +108,7 @@ function displayBooks(bookLibrary){
         newBook.appendChild(newBookAuthor);
         newBook.appendChild(newBookpagesRead);
         newBook.appendChild(delButton);
+        newBook.appendChild(readButton);
 
         bookDiv.appendChild(newBook);
 
@@ -110,11 +117,11 @@ function displayBooks(bookLibrary){
 }
 
 
-function displaySingleBook(book){
+function displaySingleBook(book) {
 
     const bookDiv = document.querySelector(".bookDiv");
 
-    
+
     var newBook = document.createElement("div");
     newBook.classList.add("bookItem");
 
@@ -129,37 +136,44 @@ function displaySingleBook(book){
     newBookpagesRead.innerText = `Pages: ${book.pages} Read? ${book.read}`;
 
     var delButton = document.createElement("button");
-        delButton.innerText = "Remove Book";
+    delButton.innerText = "Remove Book";
 
-        delButton.addEventListener('click',function(){
-            deleteBook(book.id);
-        })
+    var readButton = document.createElement("button");
+    readButton.innerText = "Change Read";
+
+
+    readButton.addEventListener('click', function () {
+        changeRead(book.id);
+    })
+
+    delButton.addEventListener('click', function () {
+        deleteBook(book.id);
+    })
 
 
     newBook.appendChild(newBookTitle);
     newBook.appendChild(newBookAuthor);
     newBook.appendChild(newBookpagesRead);
     newBook.appendChild(delButton);
+    newBook.appendChild(readButton);
 
     bookDiv.appendChild(newBook);
 }
 
 
-function updateBooksDisplay(){
+function updateBooksDisplay() {
 
-    idCounter = 1;
 
     const bookDiv = document.querySelector(".bookDiv");
 
     bookDiv.innerHTML = "";
 
-    for (var book of bookLibrary){
+    for (var book of bookLibrary) {
 
-        book.id = idCounter;
 
         var newBook = document.createElement("div");
         newBook.classList.add("bookItem");
-    
+
         var newBookTitle = document.createElement("h3");
         newBookTitle.innerText = ` #${book.id} Title: ${book.title}`;
 
@@ -173,7 +187,16 @@ function updateBooksDisplay(){
         var delButton = document.createElement("button");
         delButton.innerText = "Remove Book";
 
-        delButton.addEventListener('click',function(){
+        var readButton = document.createElement("button");
+        readButton.innerText = "Change Read";
+
+
+        readButton.addEventListener('click', function () {
+            changeRead(book.id);
+        })
+
+
+        delButton.addEventListener('click', function () {
             deleteBook(book.id);
         })
 
@@ -182,24 +205,41 @@ function updateBooksDisplay(){
         newBook.appendChild(newBookAuthor);
         newBook.appendChild(newBookpagesRead);
         newBook.appendChild(delButton);
+        newBook.appendChild(readButton);
 
         bookDiv.appendChild(newBook);
 
-        idCounter++;
 
-        }
     }
-    
+}
 
-    function deleteBook(bookId){
-        console.log(`Deleting book id ${bookId}`);
 
-        bookLibrary.splice(bookLibrary.findIndex(x => x.id === x.id),1);
+function deleteBook(bookId) {
+    console.log(`Deleting book id ${bookId}`);
 
-        console.log(` Current Books in Library: ${bookLibrary.length}`);
+    bookLibrary.splice(bookLibrary.findIndex(x => x.id === bookId), 1);
 
-        updateBooksDisplay();
-    }
+    console.log(` Current Books in Library: ${bookLibrary.length}`);
+
+    updateBooksDisplay();
+}
+
+function changeRead(bookId) {
+
+    bookIndex = bookLibrary.findIndex(x => x.id === bookId);
+
+    console.log(` Logging Book index variable: ${bookIndex}`);
+
+    console.log(`Current read value: ${bookLibrary[bookIndex].read}`);
+
+    bookLibrary[bookIndex].read = !bookLibrary[bookIndex].read;
+
+
+    console.log(`New read value: ${bookLibrary[bookIndex].read}`);
+
+    updateBooksDisplay();
+
+}
 
 
 
